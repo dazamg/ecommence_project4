@@ -13,6 +13,7 @@ const {
   update,
   getAll,
   productCount,
+  searchFilters,
 } = require("../controllers/product");
 const product = require("../models/product");
 
@@ -26,6 +27,9 @@ router.put("/product/:slug", authCheck, adminCheck, update);
 
 //Home routes'
 router.post("/products/", getAll);
+
+// Search route
+router.post('/search/filters', searchFilters)
 
 
 module.exports = router;
