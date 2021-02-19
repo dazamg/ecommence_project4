@@ -68,24 +68,6 @@ exports.update = async (req, res) => {
 };
 
 //Retreive Product from database
-// exports.getAll = async (req, res) => {
-//   try {
-//     const {sort, order, limit} = req.body
-//     const products = await Product.find({})
-//     .populate("category")
-//     .populate("subs")
-//     .sort([[sort, order]])
-//     .limit(limit)
-//     .exec();
-//     res.json(products);
-//   } catch (err) {
-//     console.log(err);
-//     return res.staus(400).send("Product fetched failed");
-//   }
-// };
-
-
-//Retreive Product from database
 exports.getAll = async (req, res) => {
   console.log(req.body)
   try {
@@ -116,20 +98,21 @@ exports.productCount = async (req, res) => {
 
 //Search //Filter
 
-const handleQuery = async(req,res,query) =>{
-  const products = await Product.find({$text: {$search: query}})
-  .populate("category", "_id name")
-  .populate("subs", "_id name")
-  .populate("postBy", "_id name")
-  .exec()
-  res.json(products)
-}
+const handleQuery = async (req, res, query) => {
+  const products = await Product.find({ $text: { $search: query } })
+    .populate("category", "_id name")
+    .populate("subs", "_id name")
+    .populate("postedBy", "_id name")
+    .exec();
+
+  res.json(products);
+};
+
 exports.searchFilters = async (req, res) => {
-  const {query} = req.body
-  if(query) {
-    console.log("query", query)
-    await handleQuery(req, res, query)
-    
+  const { query } = req.body;
+
+  if (query) {
+    console.log("query", query);
+    await handleQuery(req, res, query);
   }
-  res.json(total);
 };
