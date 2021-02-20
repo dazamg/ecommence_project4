@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 
+//Product display(title, id, color,,price,brand,shipping and images)
+
 const productSchema = new mongoose.Schema(
   {
     title: {
@@ -10,6 +12,8 @@ const productSchema = new mongoose.Schema(
       maxlength: 32,
       text: true,
     },
+  
+    // slug is the same as id but it's more precise for finding products
     slug: {
       type: String,
       unique: true,
@@ -58,12 +62,6 @@ const productSchema = new mongoose.Schema(
       type: String,
       enum: ["Nike", "Denim", "Addidas", "Target", "Under Amor"],
     },
-    // ratings: [
-    //   {
-    //     star: Number,
-    //     postedBy: { type: ObjectId, ref: "User" },
-    //   },
-    // ],
   },
   { timestamps: true }
 );

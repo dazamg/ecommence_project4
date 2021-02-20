@@ -2,6 +2,8 @@ const Sub = require("../models/sub");
 const slugify = require("slugify");
 const Product = require("../models/product");
 
+
+// Creates a new sub category
 exports.create = async (req, res) => {
   try {
     const { name, parent } = req.body;
@@ -15,6 +17,7 @@ exports.create = async (req, res) => {
 exports.list = async (req, res) =>
   res.json(await Sub.find({}).sort({ createdAt: -1 }).exec());
 
+ // Find Product by the id
 exports.read = async (req, res) => {
   let sub = await Sub.findOne({ slug: req.params.slug }).exec();
   const products = await Product.find({ subs: sub })

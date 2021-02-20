@@ -26,10 +26,12 @@ exports.listAll = async (req, res) => {
   res.json(products);
 };
 
+// Delete a Product with the specified id in the request
 exports.remove = async (req, res) => {
   try {
     const deleted = await Product.findOneAndRemove({
       slug: req.params.slug,
+      // Find Product by the id being passed by id then remove it
     }).exec();
     res.json(deleted);
   } catch (err) {
@@ -40,6 +42,7 @@ exports.remove = async (req, res) => {
 
 exports.read = async (req, res) => {
   const product = await Product.findOne({ slug: req.params.slug })
+  //Retreive the product with the id and populate the subs and category 
     .populate("category")
     .populate("subs")
     .exec();
@@ -59,7 +62,7 @@ exports.update = async (req, res) => {
     ).exec();
     res.json(updated);
   } catch (err) {
-    console.log("PRODUCT UPDATE ERROR ----> ", err);
+    console.log("<----PRODUCT UPDATE ERROR ----> ", err);
     // return res.status(400).send("Product update failed");
     res.status(400).json({
       err: err.message,
@@ -84,7 +87,7 @@ exports.getAll = async (req, res) => {
     res.json(products);
   } catch (err) {
     console.log(err);
-    return res.staus(400).send("Product fetched failed");
+    return res.status(400).send("Product fetched failed");
   }
 };
 
