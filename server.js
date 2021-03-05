@@ -25,7 +25,6 @@ app.use(bodyParser.json({ limit: "2mb" }));
 app.use(cors());
 
 // routes middleware
-// readdirSync reads the r directory asynchronous and return the right route(stackoverflow)
 readdirSync("./routes").map((r) => app.use("/api", require("./routes/" + r)));
 
 // port

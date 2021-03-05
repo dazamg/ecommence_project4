@@ -17,7 +17,7 @@ const {
   productCount,
   searchFilters,
 } = require("../controllers/product");
-const product = require("../models/product");
+
 
  //  Create a new product
 router.post("/product", authCheck, adminCheck, create);

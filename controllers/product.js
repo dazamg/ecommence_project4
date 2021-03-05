@@ -112,36 +112,53 @@ const handleQuery = async (req, res, query) => {
 };
 
 const handlePrice = async (req, res, price) => {
-  try{
+  try {
     let products = await Product.find({
       price: {
-        $gte: price [0],
+        $gte: price[0],
         $lte: price[1],
       },
     })
-    .populate("category", "_id name")
-    .populate("subs", "_id name")
-    .populate("postedBy", "_id name")
-    .exec();
+      .populate("category", "_id name")
+      .populate("subs", "_id name")
+      .populate("postedBy", "_id name")
+      .exec();
 
-    res.json(products)
+    res.json(products);
+  } catch (err) {
+    console.log(err);
   }
-  catch(err) {
-    console.log("Cannot find price range ",err)
+};
+
+const handleCategory = async (req, res, category) => {
+  try {
+    let products = await Product.find({ category })
+      .populate("category", "_id name")
+      .populate("subs", "_id name")
+      .populate("postedBy", "_id name")
+      .exec();
+
+    res.json(products);
+  } catch(err) {
+    console.log(err)
   }
-}
+ }
 
 exports.searchFilters = async (req, res) => {
-  const { query, price } = req.body;
+  const { query, price, category } = req.body;
 
   if (query) {
-    console.log("query", query);
+    console.log("query --->", query);
     await handleQuery(req, res, query);
   }
-  // price would be in an array eg. [1, 20-200]
-  if (price !== undefined) {
-    console.log("price --->", price)
-    await handlePrice(req, res, price);
 
+  // price [20, 200]
+  if (price !== undefined) {
+    console.log("price ---> ", price);
+    await handlePrice(req, res, price);
+  }
+  if(category) {
+    console.log("caegory --->", category)
+    await handleCategory(req, res, category);
   }
 };
