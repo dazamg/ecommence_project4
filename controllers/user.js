@@ -25,8 +25,8 @@ exports.userCart = async(req, res) => {
         cartObj.count = cart[i].count
         cartObj.color = cart[i].color
         // get price for sub Total
-        let {price} = await Product.findById(cart[i]._id).select("price").exec()
-        cartObj.price = price;
+        let productFromDb = await Product.findById(cart[i]._id).select("price").exec()
+        cartObj.price = productFromDb.price;
 
         products.push(cartObj)
     }
@@ -57,4 +57,20 @@ exports.getUserCart = async(req, res) => {
 
         const {products, cartTotal, totalAfterDiscount} = cart
         res.json({products, cartTotal, totalAfterDiscount}); // req.data. to obtain object in the cart in the frontend
+}
+
+exports.emptyUserCart = async(req, res) => {
+    const user = await User.findOne({ email: req.user.email }).exec();
+
+    let cart = await Cart.findOneAndRemove({ orderedBy: user._id }).exec()
+    res.json(cart)
+}
+
+exports.saveAddress = async(req, res) => {
+    const userAddress = await User.findOneAndUpdate( 
+        { email: req.user.email },
+        { address: req.user.address } 
+    ).exec();
+
+    res.json( {ok: true});
 }
